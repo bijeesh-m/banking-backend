@@ -27,13 +27,17 @@ module.exports.login = async (req, res) => {
         const { email, password } = req.body;
         const user = await userModel.findOne({ email: email });
         if (user) {
-            const auth = await bcrypt.compare(password, user.password);
-            if (auth) {
-                const token = createToken(email);
-                res.cookie("userToken", token, { httpOnly: true, maxAge: 60 * 60 * 1000 });
-                res.status(200).json({ message: "login success", token, user });
+            if (user.accountStatus === "Disabled") {
+                res.status(401).json({ message: "Your account is disabled, contact admin!" });
             } else {
-                res.status(401).json({ message: "Incorrect password or email" });
+                const auth = await bcrypt.compare(password, user.password);
+                if (auth) {
+                    const token = createToken(email);
+                    res.cookie("userToken", token, { httpOnly: true, maxAge: 60 * 60 * 1000 });
+                    res.status(200).json({ message: "login success", token, user });
+                } else {
+                    res.status(401).json({ message: "Incorrect password or email" });
+                }
             }
         } else {
             res.status(401).json({ message: "Incorrect password or email" });

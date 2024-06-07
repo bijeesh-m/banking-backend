@@ -55,14 +55,9 @@ module.exports.getTransactions = async (req, res) => {
 };
 module.exports.accountAction = async (req, res) => {
     const { userId } = req.params;
-    const { status } = req.body;
-    console.log(req.body);
-    const user = await userModel.findByIdAndUpdate(userId, { $set: { accountStatus: status } }, { new: true });
-    res.status(200).json({ message: "success", user });
+    const { newState } = req.body;
+    const user = await userModel.findByIdAndUpdate(userId, { $set: { accountStatus: newState } }, { new: true });
+    const users = await userModel.find();
+    res.status(200).json({ message: "success", users });
 };
-module.exports.transactionByUser = async (req, res) => {
-    const { userId } = req.params;
-    const user = await userModel.findById(userId);
-    const transaction = await transactionModel.findOne({ accountNumber: user.accountNumber });
-    res.status(200).json({ message: "success", transaction });
-};
+
