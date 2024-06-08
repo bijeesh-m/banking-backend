@@ -9,7 +9,7 @@ const app = express();
 const cors = require("cors");
 app.use(
     cors({
-        origin: "http://localhost:3000",
+        origin: "https://banking-liart-theta.vercel.app",
         credentials: true,
     })
 );
@@ -18,8 +18,6 @@ app.use(cookieParser());
 
 app.use("/user", userRoute);
 app.use("/admin", adminRoute);
-
-// app.get('/user/register',(req,res)=>res.send({user:"bijeesh"}))
 
 mongoose
     .connect(process.env.MONGODB_CONNECTION_STRING)
