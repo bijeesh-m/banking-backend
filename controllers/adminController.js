@@ -13,7 +13,7 @@ module.exports.login = async (req, res) => {
             const auth = await bcrypt.compare(password, admin.password);
             if (auth) {
                 const token = createToken(email);
-                res.cookie("adminToken", token, { httpOnly: true, maxAge: 60 * 60 * 1000 });
+                res.cookie("adminToken", token, { httpOnly: true,secure: true, sameSite: 'None', maxAge: 60 * 60 * 1000 });
                 res.status(200).json({ message: "login success", token, admin });
             } else {
                 res.status(401).json({ message: "Incorrect password or email" });
