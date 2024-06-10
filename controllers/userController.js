@@ -47,7 +47,7 @@ module.exports.login = async (req, res) => {
     }
 };
 module.exports.logout = async (req, res) => {
-    res.cookie("userToken", "", { maxAge: 1 });
+    res.cookie("userToken", " ", { maxAge: 1 });
     res.status(200).json({ message: "success" });
 };
 
