@@ -9,7 +9,7 @@ const app = express();
 const cors = require("cors");
 app.use(
     cors({
-        origin: "https://banking-liart-theta.vercel.app",
+        origin: "http://localhost:3000",
         credentials: true,
     })
 );

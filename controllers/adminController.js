@@ -13,7 +13,10 @@ module.exports.login = async (req, res) => {
             const auth = await bcrypt.compare(password, admin.password);
             if (auth) {
                 const token = createToken(email);
-                res.cookie("adminToken", token, { httpOnly: true,secure: true, sameSite: 'None', maxAge: 60 * 60 * 1000 });
+                res.cookie("adminToken", token, {
+                    httpOnly: true,
+                    maxAge: 60 * 60 * 1000,
+                });
                 res.status(200).json({ message: "login success", token, admin });
             } else {
                 res.status(401).json({ message: "Incorrect password or email" });
@@ -28,7 +31,7 @@ module.exports.login = async (req, res) => {
 };
 
 module.exports.logout = async (req, res) => {
-    res.cookie("adminToken", "", { maxAge: 1 });
+    res.cookie("adminToken", "", { maxAge: "0" });
     res.status(200).json({ message: "success" });
 };
 
@@ -60,4 +63,3 @@ module.exports.accountAction = async (req, res) => {
     const users = await userModel.find();
     res.status(200).json({ message: "success", users });
 };
-
